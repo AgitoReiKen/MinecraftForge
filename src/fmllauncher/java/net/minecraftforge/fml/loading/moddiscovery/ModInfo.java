@@ -5,6 +5,7 @@
 
 package net.minecraftforge.fml.loading.moddiscovery;
 
+import net.minecraftforge.fml.loading.FMLConfig;
 import net.minecraftforge.fml.loading.StringSubstitutor;
 import net.minecraftforge.fml.loading.StringUtils;
 import net.minecraftforge.forgespi.language.IConfigurable;
@@ -62,7 +63,8 @@ public class ModInfo implements IModInfo, IConfigurable
         this.version = config.<String>getConfigElement("version")
                 .map(s -> StringSubstitutor.replace(s, ownFile.map(ModFileInfo::getFile).orElse(null)))
                 .map(DefaultArtifactVersion::new).orElse(DEFAULT_VERSION);
-        this.displayName = config.<String>getConfigElement("displayName").orElse(this.modId);
+        this.displayName = !FMLConfig.shownMods().contains(this.modId) ? this.modId + " [hidden]": this.modId;
+
         this.description = config.<String>getConfigElement("description").orElse("MISSING DESCRIPTION");
 
         this.logoFile = Optional.ofNullable(config.<String>getConfigElement("logoFile")

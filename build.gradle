@@ -117,7 +117,6 @@ project(':forge') {
     apply plugin: 'maven-publish'
     apply plugin: 'eclipse'
     apply plugin: 'net.minecraftforge.gradle.patcher'
-    apply plugin: 'org.cadixdev.licenser'
 
     java.toolchain.languageVersion = JavaLanguageVersion.of(8)
     group = 'net.minecraftforge'
@@ -1081,48 +1080,6 @@ project(':forge') {
             sources.from sourceSets.test.java.srcDirs
         }
         sourceSets.test.java.srcDirs.each { extractMappedNew.addTarget it }
-    }
-    
-    publishing {
-        publications {
-            mavenJava(MavenPublication) {
-                artifact universalJar
-                artifact installerJar
-                //TODO: installer-win
-                artifact makeMdk
-                artifact userdevJar
-                artifact sourcesJar
-                artifact launcherJar
-
-                pom {
-                    name = 'forge'
-                    description = 'Modifactions to Minecraft to enable mod developers.'
-                    url = 'https://github.com/MinecraftForge/MinecraftForge'
-
-                    scm {
-                        url = 'https://github.com/MinecraftForge/MinecraftForge'
-                        connection = 'scm:git:git://github.com/MinecraftForge/MinecraftForge.git'
-                        developerConnection = 'scm:git:git@github.com:MinecraftForge/MinecraftForge.git'
-                    }
-
-                    issueManagement {
-                        system = 'github'
-                        url = 'https://github.com/MinecraftForge/MinecraftForge/issues'
-                    }
-
-                    licenses {
-                        license {
-                            name = 'LGPL 2.1'
-                            url = 'https://github.com/MinecraftForge/MinecraftForge/blob/1.13-pre/LICENSE.txt'
-                            distribution = 'repo'
-                        }
-                    }
-                }
-            }
-        }
-        repositories {
-            maven gradleutils.getPublishingForgeMaven()
-        }
     }
 }
 

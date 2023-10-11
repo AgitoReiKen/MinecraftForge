@@ -122,7 +122,7 @@ public class FMLHandshakeMessages
 
         public C2SModListReply()
         {
-            this.mods = ModList.get().getMods().stream().map(ModInfo::getModId).collect(Collectors.toList());
+            this.mods = ModList.get().getShownMods().stream().map(ModInfo::getModId).collect(Collectors.toList());
             this.channels = NetworkRegistry.buildChannelVersions();
             this.registries = Maps.newHashMap(); //TODO: Fill with known hashes, which requires keeping a file cache
         }

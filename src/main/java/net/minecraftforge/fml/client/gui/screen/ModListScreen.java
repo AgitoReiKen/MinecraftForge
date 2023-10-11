@@ -244,6 +244,7 @@ public class ModListScreen extends Screen
     @Override
     public void init()
     {
+
         for (ModInfo mod : mods)
         {
             listWidth = Math.max(listWidth,getFontRenderer().width(mod.getDisplayName()) + 10);

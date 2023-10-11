@@ -15,6 +15,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,7 @@ public class FMLConfig
         configSpec.define("maxThreads", -1);
         configSpec.define("versionCheck", Boolean.TRUE);
         configSpec.define("defaultConfigPath",  "defaultconfigs");
+        configSpec.define("shownMods",  new ArrayList<String>());
     }
 
     private CommentedFileConfig configData;
@@ -85,5 +87,10 @@ public class FMLConfig
 
     public static String defaultConfigPath() {
         return INSTANCE.configData.<String>getOptional("defaultConfigPath").orElse("defaultconfigs");
+    }
+
+    public static ArrayList<String> shownMods()
+    {
+        return INSTANCE.configData.get("shownMods");
     }
 }

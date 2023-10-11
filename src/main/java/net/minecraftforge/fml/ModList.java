@@ -7,6 +7,7 @@ package net.minecraftforge.fml;
 
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.fml.event.lifecycle.IModBusEvent;
+import net.minecraftforge.fml.loading.FMLConfig;
 import net.minecraftforge.forgespi.language.ModFileScanData;
 import net.minecraftforge.fml.loading.moddiscovery.ModFile;
 import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
@@ -50,13 +51,15 @@ public class ModList
     private List<ModContainer> mods;
     private Map<String, ModContainer> indexedMods;
     private List<ModFileScanData> modFileScanData;
-
+    private List<ModInfo> shownMods;
     private ModList(final List<ModFile> modFiles, final List<ModInfo> sortedList)
     {
         this.modFiles = modFiles.stream().map(ModFile::getModFileInfo).map(ModFileInfo.class::cast).collect(Collectors.toList());
         this.sortedList = sortedList.stream().
                 map(ModInfo.class::cast).
                 collect(Collectors.toList());
+        List<String> _shownMods = FMLConfig.shownMods();
+        this.shownMods = sortedList.stream().filter(x -> _shownMods.contains(x.getModId())).map(ModInfo.class::cast).collect(Collectors.toList());
         this.fileById = this.modFiles.stream().map(ModFileInfo::getMods).flatMap(Collection::stream).
                 map(ModInfo.class::cast).
                 collect(Collectors.toMap(ModInfo::getModId, ModInfo::getOwningFile));
@@ -175,7 +178,9 @@ public class ModList
     {
         return this.sortedList;
     }
-
+    public List<ModInfo> getShownMods() {
+        return this.shownMods;
+    }
     public boolean isLoaded(String modTarget)
     {
         return this.indexedMods.containsKey(modTarget);
