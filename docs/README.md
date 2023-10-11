@@ -1,4 +1,4 @@
-Itsu MinecraftForge, but with ability to hide mods from sending their information to the server. 
+Itsu MinecraftForge, but with ability to prevent sending information to the server about mods you don't want. 
 
 Also **Mods** menu shows mod ids and whether they are hidden or not.
 
