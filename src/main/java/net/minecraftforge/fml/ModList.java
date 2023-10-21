@@ -8,6 +8,7 @@ package net.minecraftforge.fml;
 import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.fml.event.lifecycle.IModBusEvent;
 import net.minecraftforge.fml.loading.FMLConfig;
+import net.minecraftforge.forgespi.language.IModInfo;
 import net.minecraftforge.forgespi.language.ModFileScanData;
 import net.minecraftforge.fml.loading.moddiscovery.ModFile;
 import net.minecraftforge.fml.loading.moddiscovery.ModFileInfo;
@@ -46,11 +47,13 @@ public class ModList
     private static Logger LOGGER = LogManager.getLogger();
     private static ModList INSTANCE;
     private final List<ModFileInfo> modFiles;
+    private final List<ModFileInfo> shownModFiles;
     private final List<ModInfo> sortedList;
     private final Map<String, ModFileInfo> fileById;
     private List<ModContainer> mods;
     private Map<String, ModContainer> indexedMods;
     private List<ModFileScanData> modFileScanData;
+    private List<ModFileScanData> shownModFileScanData;
     private List<ModInfo> shownMods;
     private ModList(final List<ModFile> modFiles, final List<ModInfo> sortedList)
     {
@@ -60,6 +63,11 @@ public class ModList
                 collect(Collectors.toList());
         List<String> _shownMods = FMLConfig.shownMods();
         this.shownMods = sortedList.stream().filter(x -> _shownMods.contains(x.getModId())).map(ModInfo.class::cast).collect(Collectors.toList());
+        this.shownModFiles = modFiles.stream().filter(x ->
+            x.getModFileInfo().getMods().stream().anyMatch(
+                    mod -> _shownMods.contains(mod.getModId())
+            )
+        ).map(ModFile::getModFileInfo).map(ModFileInfo.class::cast).collect(Collectors.toList());
         this.fileById = this.modFiles.stream().map(ModFileInfo::getMods).flatMap(Collection::stream).
                 map(ModInfo.class::cast).
                 collect(Collectors.toMap(ModInfo::getModId, ModInfo::getOwningFile));
@@ -103,6 +111,10 @@ public class ModList
     public List<ModFileInfo> getModFiles()
     {
         return modFiles;
+    }
+    public List<ModFileInfo> getShownModFiles()
+    {
+        return shownModFiles;
     }
 
     public ModFileInfo getModFileById(String modid)
@@ -204,6 +216,21 @@ public class ModList
                     collect(Collectors.toList());
         }
         return modFileScanData;
+
+    }
+ public List<ModFileScanData> getShownScanData()
+    {
+        if (shownModFileScanData == null)
+        {
+            shownModFileScanData = this.shownMods.stream().
+                    map(ModInfo::getOwningFile).
+                    filter(Objects::nonNull).
+                    map(ModFileInfo::getFile).
+                    distinct().
+                    map(ModFile::getScanResult).
+                    collect(Collectors.toList());
+        }
+        return shownModFileScanData;
 
     }
 
