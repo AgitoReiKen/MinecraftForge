@@ -31,7 +31,7 @@ public class FMLConfig
         configSpec.define("maxThreads", -1);
         configSpec.define("versionCheck", Boolean.TRUE);
         configSpec.define("defaultConfigPath",  "defaultconfigs");
-        configSpec.define("shownMods",  new ArrayList<String>());
+        configSpec.define("shownMods",  new ArrayList<String>(Arrays.asList("minecraft", "forge")));
     }
 
     private CommentedFileConfig configData;
