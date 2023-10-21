@@ -51,7 +51,7 @@ ext {
     MIN_TAG_FOR_CHANGELOG = "36.0"
 }
 
-version = gradleutils.getMCTagOffsetBranchVersion(MC_VERSION)
+version = "1.16.5-36.2.39"
 
 project(':mcp') {
     apply plugin: 'net.minecraftforge.gradle.mcp'
@@ -198,7 +198,7 @@ project(':forge') {
         INSTALLER_TOOLS = 'net.minecraftforge:installertools:1.2.6'
     }
 
-    version = gradleutils.getMCTagOffsetBranchVersion(MC_VERSION)
+    version = "1.16.5-36.2.39"
     println('Forge Version: ' + version)
 
     patcher {
